@@ -202,7 +202,7 @@ Authorization: Bearer {{token}}
 
 Egy **product** nevű tábla esetén
 
--   `php artisan make:model product -a --api`
+-   `php artisan make:model Product -a --api`
 -   Létrehozza a kontrollert az össze metódussal, a modellt és a migrációs fájlt.
     -   migrations\2025_11_01_191501_create_products_table.php
     -   app\Models\product.php
