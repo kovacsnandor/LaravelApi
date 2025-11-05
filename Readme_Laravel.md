@@ -1,3 +1,40 @@
+# Laravel parancs összefoglaló
+Laravel **laravel-rest-api** nevű (ez bármi lehet, ez lesz a projekt mappája) projekt létrehozása: `composer create-project laravel/laravel laravel-rest-api`
+
+Ellenőrzés, szerver elindítás: `php artisan serve`
+
+Az api támogatást le kell telepíteni: `php artisan install:api`
+
+Egy tábla CRUD előkészítése: `php artisan make:model Product -a --api`
+
+ Migráció futtatása: `php artisan migrate`
+
+## Egyéb migrációs parancsok:
+Az utolsó migráció visszvonása: `php artisan migrate:rollback`
+Az utolsó migráció visszvonása: `php artisan migrate:rollback --step=1`
+Az utolsó 3 migráció visszvonása: `php artisan migrate:rollback --step=3`
+Az összes migráció vissazvonása: `php artisan migrate:reset`
+Visszavonja az összes migrációt (down()) majd újra lefuttatja őket (up()): `php artisan migrate:refresh`
+Visszavonja az összes migrációt majd újra lefuttatja őket és a seedereket: `php artisan migrate:refresh --seed`
+Törli az összes táblát és újra migrál (nem fut a down): `php artisan migrate:fresh`
+Törli az összes táblát és újra migrál és a seedel: `php artisan migrate:fresh --seed`
+
+Konkrét Migráció Futtatása (up metódus): 
+`php artisan migrate --path=database/migrations/2025_01_20_123456_create_products_table.php`
+
+Konkrét Migráció Visszavonása (DOWN metódus)
+`php artisan migrate:rollback --path=database/migrations/2025_01_20_123456_create_products_table.php`
+
+Konkrét Migráció Frissítése (Újraépítése) (down(), up())
+`php artisan migrate:refresh --path=database/migrations/2025_01_20_123456_create_products_table.php`
+
+Utólagos táblamódosítás migrációs fájl létrehozás:
+`php artisan make:migration add_unique_index_to_produscts_name_column --table=products`
+
+## Seeder
+Seeder futtatása: `php artisan db:seed`
+Konkrét seeder osztály futtatása: `php artisan db:seed --class=ProductSeeder`
+
 # [Laravel](https://laravel.com/)
 
 [Laravel readouble](https://readouble.com/laravel/11.x/en/)
