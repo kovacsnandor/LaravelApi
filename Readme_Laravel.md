@@ -224,14 +224,14 @@ migrations\2025_11_01_191501_create_products_table.php
 public function up(): void
 {
     Schema::create('products', function (Blueprint $table) {
-        $table->id();
+        $table->integer('id')->autoIncrement();
+        $table->primary('id');
         $table->string('category', 255)->notNull();
-        $table->string('name', 191)->notNull(); // Ha indexelni akarjuk, ne legyen nagyobb méretű régi mysql motor esetén (mysql: 5.7.7 alatt)
-        $table->text('description', 255)->nullable();
-        $table->string('picture', 255)->nullable();
-        $table->Integer('price')->nullable();
-        $table->Integer('stock')->default(1);
-
+        $table->string('name', 191)->notNull();
+        $table->string('description', 255);
+        $table->string('picture', 255);
+        $table->Integer('price');
+        $table->Integer('stock');
         //Minta mezők
 
         // --- 2. Logikai (BOOLEAN) Alapértelmezett Értékkel
@@ -240,7 +240,7 @@ public function up(): void
         $table->boolean('is_published')->default(false);
 
         // --- 3. Dátum (DATE)
-        $table->date('start_date');
+        $table->date('start_date')->nullable()->default(null);
 
         // --- 4. Dátum és Idő (DATETIME) Alapértelmezett Értékkel
         // Alapértelmezés: NULL

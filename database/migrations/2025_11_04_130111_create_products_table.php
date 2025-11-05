@@ -42,6 +42,7 @@ return new class extends Migration
             // Ár oszlop: 10 számjegy összesen, 2 tizedesjegy pontossággal.
             // Alapértelmezés: 0.00
             $table->decimal('final_price', 10, 2)->default(0.00);
+            // $table->timestamps();
         });
     }
 
