@@ -29,7 +29,15 @@ return new class extends Migration
     {
         //Nem törli le
         Schema::table('products', function (Blueprint $table) {
-            //
+            // Eltávolítja az egyedi indexet az 'email' oszlopról
+            $table->dropUnique(['name']);
+            // VAGY az index nevével:
+            // $table->dropUnique('products_name_unique');
+            $table->dropColumn('is_published2');
+
+            // 2. A string oszlop méretének visszaállítása az eredeti 100-ra
+            // (Az "posts" tábla eredeti oszlop mérete feltételezve: 100)
+            $table->string('category', 255)->change();
         });
     }
 };

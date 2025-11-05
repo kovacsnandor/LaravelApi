@@ -312,7 +312,7 @@ Az utolsó migráció visszvonása: `php artisan migrate:rollback`
 Az utolsó migráció visszvonása: `php artisan migrate:rollback --step=1`
 Az utolsó 3 migráció visszvonása: `php artisan migrate:rollback --step=3`
 Az összes migráció vissazvonása: `php artisan migrate:reset`
-Visszavonja az összes migrációt majd újra lefuttatja őket: `php artisan migrate:refresh`
+Visszavonja az összes migrációt (down()) majd újra lefuttatja őket (up()): `php artisan migrate:refresh`
 Visszavonja az összes migrációt majd újra lefuttatja őket és a seedereket: `php artisan migrate:refresh --seed`
 Törli az összes táblát és újra migrál (nem fut a down): `php artisan migrate:fresh`
 Törli az összes táblát és újra migrál és a seedel: `php artisan migrate:fresh --seed`
@@ -331,14 +331,17 @@ Konkrét Migráció Frissítése (Újraépítése) (down(), up())
 `php artisan make:migration add_unique_index_to_produscts_name_column --table=products`
 
 ```php
- public function up(): void
+public function up(): void
 {
     Schema::table('products', function (Blueprint $table) {
-        // Hozzáadja az 'email' oszlophoz az egyedi indexet
+        //Egyedi indexet teszek a name mezőre
         $table->unique('name', 'products_name_unique');
+        //Beteszek egy új oszlopot
         $table->boolean('is_published2')->default(false);
+        //Módosítom a mező méretét
+        $table->string('category', 200)->change();
     });
-}
+}        
 
 /**
  * Reverse the migrations.
@@ -350,6 +353,11 @@ public function down(): void
         $table->dropUnique(['name']); 
         // VAGY az index nevével:
         // $table->dropUnique('products_name_unique');
+        $table->dropColumn('is_published2');
+            
+            // 2. A string oszlop méretének visszaállítása az eredeti 100-ra
+            // (Az "posts" tábla eredeti oszlop mérete feltételezve: 100)
+        $table->string('category', 255)->change();
     });
 }
 ```
