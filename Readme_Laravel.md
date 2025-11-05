@@ -336,6 +336,7 @@ Konkrét Migráció Frissítése (Újraépítése) (down(), up())
     Schema::table('products', function (Blueprint $table) {
         // Hozzáadja az 'email' oszlophoz az egyedi indexet
         $table->unique('name', 'products_name_unique');
+        $table->boolean('is_published2')->default(false);
     });
 }
 
