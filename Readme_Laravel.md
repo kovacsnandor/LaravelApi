@@ -368,8 +368,9 @@ Megjegyzés: a **Schema::create** helyett itt már a **Schema::table** szerepel.
 
 # Seedelés
 A seedelés intézi el a táblák adatokkal való feltöltését.
-3 esetet szoktunk:
+5 esetet szoktunk:
 - sql script
+- php tömbbel
 - src fájlból
 - teszt feltöltés factory-val véletlen kiválsztással saját tömbből
 - Faker könyvtárral
