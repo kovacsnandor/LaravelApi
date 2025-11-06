@@ -32,6 +32,10 @@ Utólagos táblamódosítás migrációs fájl létrehozás:
 `php artisan make:migration add_unique_index_to_produscts_name_column --table=products`
 
 ## Seeder
+Seeder osztály készítés (UserSeeder osztály) (database/seeders/UserSeeder.php):  
+`php artisan make:seeder UserSeeder`
+
+
 Seeder futtatása: `php artisan db:seed`
 Konkrét seeder osztály futtatása: `php artisan db:seed --class=ProductSeeder`
 
