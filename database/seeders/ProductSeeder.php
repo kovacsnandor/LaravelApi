@@ -15,6 +15,6 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         ini_set('memory_limit', '256M');
-        Product::factory()->count(10000)->create();
+        Product::factory()->count(100)->create();
     }
 }

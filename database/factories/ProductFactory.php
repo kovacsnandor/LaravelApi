@@ -48,6 +48,14 @@ class ProductFactory extends Factory
             // Véletlen adatok a Faker segítségével
             'price' => $this->faker->numberBetween(500, 5000), // Véletlen ár 500 és 5000 között
             'stock' => $this->faker->numberBetween(0, 1000),   // Véletlen raktárkészlet 0 és 1000 között
+
+            'personName' => $this->faker->name(),
+            'zipcode' => $this->faker->postcode(),
+            'city' => $this->faker->city(),
+            'adress' => $this->faker->address(),
+            'phone' => $this->faker->phoneNumber(),
+            'dob' => $this->faker->date('Y-m-d'),
+
         ];
     }
 }

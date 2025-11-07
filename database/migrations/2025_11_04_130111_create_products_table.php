@@ -23,6 +23,14 @@ return new class extends Migration
             $table->Integer('stock');
             //Minta mezők
 
+            //Személyes adatok
+            $table->string('personName', 255)->default(null);
+            $table->string('zipcode', 10)->default(null);
+            $table->string('city', 100)->default(null);
+            $table->string('adress', 255)->default(null);
+            $table->string('phone', 50)->default(null);
+            $table->date('dob')->default(null);
+
             // --- 2. Logikai (BOOLEAN) Alapértelmezett Értékkel
             // Alapértelmezés: FALSE (0)
             // TINYINT(1)
