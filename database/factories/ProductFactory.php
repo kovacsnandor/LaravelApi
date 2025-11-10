@@ -26,6 +26,13 @@ class ProductFactory extends Factory
     ];
 
 
+    protected function withFaker()
+    {
+        // Manuális beállítás az app config felülírására
+        return \Faker\Factory::create('hu_HU');
+    }
+
+
     /**
      * Define the model's default state.
      *
@@ -36,14 +43,18 @@ class ProductFactory extends Factory
         // Véletlenszerűen kiválasztunk egy elemet a $productData tömbből
         $randomProduct = $this->faker->randomElement($this->productData);
         $randomUniqueNumber = $this->faker->unique()->randomNumber(6, true);
+        $randomPicture = 'https://picsum.photos/'.$this->faker->numberBetween(100, 600);
 
         return [
             //         // Fix adatok a kiválasztott elemből
             'category' => $randomProduct['category'],
             //'name' => $randomProduct['name'] . ' (' . $this->faker->unique()->city() . ')', // Némi variáció hozzáadása
             'name' =>$randomProduct['name'] . ' ('.$randomUniqueNumber.')', // Némi variáció hozzáadása
-            'description' => $randomProduct['description'],
-            'picture' => $randomProduct['picture'],
+            //'description' => $randomProduct['description'],
+            'description' => $this->faker->sentence(),
+            //'picture' => $randomProduct['picture'],
+            //'picture' => $this->faker->imageUrl(),
+            'picture' => $randomPicture,
 
             // Véletlen adatok a Faker segítségével
             'price' => $this->faker->numberBetween(500, 5000), // Véletlen ár 500 és 5000 között
