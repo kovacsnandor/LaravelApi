@@ -24,12 +24,12 @@ return new class extends Migration
             //Minta mezők
 
             //Személyes adatok
-            $table->string('personName', 255)->default(null);
-            $table->string('zipcode', 10)->default(null);
-            $table->string('city', 100)->default(null);
-            $table->string('adress', 255)->default(null);
-            $table->string('phone', 50)->default(null);
-            $table->date('dob')->default(null);
+            $table->string('personName', 255)->nullable()->default(null);
+            $table->string('zipcode', 10)->nullable()->default(null);
+            $table->string('city', 100)->nullable()->default(null);
+            $table->string('adress', 255)->nullable()->default(null);
+            $table->string('phone', 50)->nullable()->default(null);
+            $table->date('dob')->nullable()->default(null);
 
             // --- 2. Logikai (BOOLEAN) Alapértelmezett Értékkel
             // Alapértelmezés: FALSE (0)

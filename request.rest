@@ -24,10 +24,24 @@ Content-Type: application/json
 
 {
     "category": "Bogyós",
-    "name": "Málna2222",
+    "name": "f3333",
     "description": "Kézzel termelt egészség",
     "picture": "https:\/\/hur.webmania.cc\/img\/malna.jpg",
     "price": 8000,
-    "stock": 500
+    "stock": 22
 }
 
+### delete product by id
+delete {{host}}/api/products/104
+Accept: application/json
+Content-Type: application/json
+
+### post products
+PATCH {{host}}/api/products/109
+Accept: application/json
+Content-Type: application/json
+
+{
+    "price": 1002,
+    "stock": 200
+}
