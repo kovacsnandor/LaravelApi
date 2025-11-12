@@ -6,4 +6,28 @@
 ### @token = 12|ibiwTdr77o8ppToh1tBxIkckBNb8ECjIjLgaweTaa757cdef
 
 ### teszt
-get {{host}}/api/
+get {{host}}/api/x
+
+
+### get products
+get {{host}}/api/products
+
+
+### get product by id
+get {{host}}/api/products/5023333
+
+
+### post products
+POST  {{host}}/api/products
+Accept: application/json
+Content-Type: application/json
+
+{
+    "category": "Bogyós",
+    "name": "Málna2222",
+    "description": "Kézzel termelt egészség",
+    "picture": "https:\/\/hur.webmania.cc\/img\/malna.jpg",
+    "price": 8000,
+    "stock": 500
+}
+

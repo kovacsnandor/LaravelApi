@@ -248,10 +248,10 @@ Egy **product** nevű tábla esetén
     -   migrations\2025_11_01_191501_create_products_table.php
     -   app\Models\product.php
     -   seeders\ProductSeeder.php
+    -   database\factories\ProductFactory.php
     -   app\Http\Controllers\ProductController.php
     -   app\Http\Requests\StoreproductRequest.php
     -   app\Http\Requests\UpdateproductRequest.php
-    -   database\factories\ProductFactory.php
     -   app\Policies\ProductPolicy.php
 
 ## Migráció
@@ -726,6 +726,42 @@ Route::post('products', [ProductController::class, 'store']);
 Route::patch('products/{id}', [ProductController::class, 'update']);
 Route::delete('products/{id}', [ProductController::class, 'destroy']);
 ```
+
+## Lekérdezések futtatása
+Laravel-ben a kontrollerekben három fő módon futtathatsz SQL lekérdezéseket:
+
+- **Eloquent ORM** (Object-Relational Mapper): A leggyakoribb és ajánlottabb módszer. Objektumokat használ az adatbázis-táblák reprezentálására.
+
+- **Query Builder**: A nyers SQL-hez legközelebb álló, de mégis PHP szintaktikát használó interfész.
+
+- **Nyers SQL** (Raw SQL): Közvetlenül írhatsz SQL parancsokat.
+
+### Eloquent ORM
+
+1. Eloquent ORM (Ajánlott)
+Az Eloquent az adatok kezelésének Laravel-es módja. Feltételezi, hogy létrehoztad a megfelelő modellt a tábládhoz (pl. App\Models\Termek a termek táblához).
+- Összes termék: Termek::all();
+- Lekérdezés feltétellel: Termek::where('ar', '>', 5000)->get();
+- Egy elem: Termek::find(1);
+- Új tarmék: Termek::create(['megnevezes' => 'Laptop']);
+
+### Query Builder
+A Query Builder-t akkor használd, ha az Eloquent modellezés nem szükséges (pl. aggregáció, összetett illesztések), de nem akarsz nyers SQL-t írni. 
+- Ehhez a DB Facade-ot (vagy a `use Illuminate\Support\Facades\DB`-t) kell használni.
+
+- MűveletQuery Builder KódÖsszes lekérdezése: DB::table('termek')->get();
+- Lekérdezés feltételekkel: DB::table('termek')->where('ar', 50000)->first();
+- Új bejegyzés: DB::table('termek')->insert(['megnevezes' => 'Monitor']);
+- Csoportosítás (GROUP BY): DB::table('termek')->select('darab')->groupBy('darab')->get();
+
+### Nyers SQL
+A Nyers SQL-t csak akkor használd, ha nincs más megoldás, mivel fennáll az SQL Injection veszélye, ha nem paraméterezed megfelelően.
+- Ehhez a DB Facade-ot (vagy a `use Illuminate\Support\Facades\DB`-t) kell használni.
+
+- MűveletNyers SQL KódLekérdezés (SELECT): DB::select('SELECT * FROM users WHERE active = ?', [1]);
+- Beszúrás (INSERT): DB::insert('INSERT INTO users (id, name) VALUES (?, ?)', [1, 'Péter']);
+- Módosítás (UPDATE/DELETE): DB::update('UPDATE users SET name = "Kata" WHERE id = ?', [2]);
+
 
 ## Kontrollerek
 app/Http/Controllers
