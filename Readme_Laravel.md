@@ -1,4 +1,5 @@
 # Laravel parancs összefoglaló
+## Alap telepítés
 Laravel **laravel-rest-api** nevű (ez bármi lehet, ez lesz a projekt mappája) projekt létrehozása: `composer create-project laravel/laravel laravel-rest-api`
 
 Ellenőrzés, szerver elindítás: `php artisan serve`
@@ -38,6 +39,10 @@ Seeder osztály készítés (UserSeeder osztály) (database/seeders/UserSeeder.p
 
 Seeder futtatása: `php artisan db:seed`
 Konkrét seeder osztály futtatása: `php artisan db:seed --class=ProductSeeder`
+
+## cors
+A cors beállítás létrehozása: `php artisan config:publish cors`
+
 
 # [Laravel](https://laravel.com/)
 

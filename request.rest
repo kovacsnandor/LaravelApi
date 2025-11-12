@@ -9,8 +9,19 @@
 get {{host}}/api/x
 
 
+### get methods
+OPTIONS {{host}}/api/products
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer
+
+
+
 ### get products
 get {{host}}/api/products
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer
 
 
 ### get product by id
@@ -37,11 +48,11 @@ Accept: application/json
 Content-Type: application/json
 
 ### post products
-PATCH {{host}}/api/products/109
+PATCH {{host}}/api/products/1
 Accept: application/json
 Content-Type: application/json
 
 {
     "price": 1002,
-    "stock": 200
+    "stock": "eee"
 }
