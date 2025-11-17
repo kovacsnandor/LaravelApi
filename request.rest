@@ -5,6 +5,69 @@
 @host = {{protocol}}{{hostname}}:{{port}}
 ### @token = 12|ibiwTdr77o8ppToh1tBxIkckBNb8ECjIjLgaweTaa757cdef
 
+
+### login
+# @name login
+POST {{host}}/api/users/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "123"
+}
+
+###
+@token = {{login.response.body.data.token}}
+
+### logout user
+POST  {{host}}/api/users/logout
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+### get users
+GET  {{host}}/api/users
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### get user by id
+GET  {{host}}/api/users/4
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### post user
+POST {{host}}/api/users 
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name":  "test2",
+    "email": "test2@example.com",
+    "password": "123"
+}
+
+### patch user
+PATCH {{host}}/api/users/5
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "password": "1234"
+}
+
+### delete user
+DELETE {{host}}/api/users/4
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+
+
+
 ### teszt
 get {{host}}/api/x
 
