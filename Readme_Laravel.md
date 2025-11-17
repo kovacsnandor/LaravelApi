@@ -992,7 +992,7 @@ Authorization: Bearer {{token}}
 
 **UsersControllers.php**
 ```php
-public function login(LoginUsersRequest $request)
+public function login(LoginUserRequest $request)
 {
     //Eltároljuk az adatokat változókba
     $email = $request->input(('email'));
@@ -1016,14 +1016,14 @@ public function login(LoginUsersRequest $request)
     //$user->token = $user->createToken('access')->plainTextToken;
 
     //Lejárati idővel
-    // $expirationTime = Carbon::now()->addSeconds(10);
-    // $name ="10sec";
+    $expirationTime = Carbon::now()->addSeconds(10);
+    $name ="10sec";
     // $expirationTime = Carbon::now()->addMinutes(30);
     // $name ="30min";
     // $expirationTime = Carbon::now()->addHours(4);;
     // $name ="4hours";
-    $expirationTime = Carbon::now()->addDays(1);
-    $name ="1day";
+    // $expirationTime = Carbon::now()->addDays(1);
+    // $name ="1day";
     $abilities = ['*'];
 
     $user->token = $user->createToken(

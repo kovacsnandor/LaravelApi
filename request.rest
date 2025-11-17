@@ -64,27 +64,14 @@ Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
 
-
-
-
-
 ### teszt
 get {{host}}/api/x
-
-
-### get methods
-OPTIONS {{host}}/api/products
-Accept: application/json
-Content-Type: application/json
-Authorization: Bearer
-
-
 
 ### get products
 get {{host}}/api/products
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer
+Authorization: Bearer {{token}}
 
 
 ### get product by id
