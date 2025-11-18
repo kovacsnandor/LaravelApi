@@ -1598,7 +1598,7 @@ Nincs egyetlen olyan beépített Artisan parancs, mint a php artisan make:model 
 
 Az eltávolítás lépései:
 1. Vegyük ki a táblára való hivatkozásokat:
-- Endpointok: **routes/api.ph**p fájlból tröljük az endpointokat
+- Endpointok: **routes/api.php** fájlból töröljük az endpointokat
 - Seeders: **database/seeders/DatabaseSeeder.php**: Tisztítsuk ki belőle
 
 2. Kézzel egyenként töröljük le a tábla kezeléséhez létrehozott osztályokat:
