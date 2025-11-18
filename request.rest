@@ -13,8 +13,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "test@example.com",
-    "password": "123"
+    "email": "test2@example.com",
+    "password": "1234"
 }
 
 ###
@@ -49,7 +49,7 @@ Authorization: Bearer {{token}}
 }
 
 ### patch user
-PATCH {{host}}/api/users/5
+PATCH {{host}}/api/users/3
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
@@ -82,10 +82,12 @@ get {{host}}/api/products/5023333
 POST  {{host}}/api/products
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{token}}
+
 
 {
     "category": "Bogyós",
-    "name": "f3333",
+    "name": "f3333xx",
     "description": "Kézzel termelt egészség",
     "picture": "https:\/\/hur.webmania.cc\/img\/malna.jpg",
     "price": 8000,
@@ -96,11 +98,15 @@ Content-Type: application/json
 delete {{host}}/api/products/104
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{token}}
+
 
 ### post products
 PATCH {{host}}/api/products/1
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{token}}
+
 
 {
     "price": 1002,

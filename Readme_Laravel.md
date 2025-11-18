@@ -1,10 +1,32 @@
-Verzió: 1.0.0
+# Verzió: 1.1.0
+Szemantikus Verziózás (Semantic Versioning: SemVer), amely három szintet használ:
+Major.Minor.Patch:
+- Major (fő verzió): Alapvető változtatás(ok)
+- Minor (alverzió): Új fejezet(ek)
+- Patch (javítás): Kisebb javítások
 
 # Laravel parancs összefoglaló
 
 ## Alap telepítés
 - `composer create-project laravel/laravel laravel-rest-api`
     - Laravel **laravel-rest-api** nevű (ez lesz a projekt mappája) projekt létrehozása
+
+## Artisan parancsok
+- Az Artisan a Laravel keretrendszer parancssori felülete (CLI - Command-Line Interface).
+- Minden Artisan parancsot a Laravel projekt gyökérkönyvtárából kell futtatni a php artisan előtaggal.
+- Segítségével tudjuk a keretrendszert bővíteni, működtetni
+- A Laravel gyökerében található **artisan** fájl maga az Artisan parancssori eszköz belépési pontja.
+    - Amikor a terminálban kiadod a php artisan [parancs] utasítást, a PHP értelmező a artisan fájlt futtatja le először.
+    - A fájl feladata, hogy 
+        - betöltse a Laravel keretrendszert, 
+        - elindítsa a console kernelt, majd 
+        - átadja a megadott parancsot (pl. make:model) feldolgozásra.
+
+## Help használata
+- `php artisan list`
+    - Összes parancs listája
+- `php artisan help make:model` vagy `php artisan make:model --help`
+    - Help egy konkrét parancsról
 
 ## Laravel verzió lekérdezése
 - `php artisan --version`
@@ -103,8 +125,8 @@ Ajánlott parancs: `php artisan make:controller UserController --resource --mode
 - `php artisan config:publish cors`
     - A cors beállítás létrehozása: **config/cors.php**
 
-# [Laravel](https://laravel.com/)
-
+# Laravel
+[Laravel](https://laravel.com/)
 [Laravel readouble](https://readouble.com/laravel/11.x/en/)
 [Available Column Types](https://laravel.com/docs/11.x/migrations#available-column-types)
 
@@ -309,14 +331,14 @@ Egy **product** nevű tábla esetén
 
 -   `php artisan make:model Product -a --api`
 -   Létrehozza a kontrollert az össze metódussal, a modellt és a migrációs fájlt.
-    - migrations\2025_11_01_191501_create_products_table.php
-    - app\Models\Product.php
-    - seeders\ProductSeeder.php
-    - database\factories\ProductFactory.php
-    - app\Http\Controllers\ProductController.php
-    - app\Http\Requests\StoreproductRequest.php
-    - app\Http\Requests\UpdateproductRequest.php
-    - app\Policies\ProductPolicy.php
+    -   migrations\2025_11_01_191501_create_products_table.php
+    -   app\Models\product.php
+    -   seeders\ProductSeeder.php
+    -   database\factories\ProductFactory.php
+    -   app\Http\Controllers\ProductController.php
+    -   app\Http\Requests\StoreproductRequest.php
+    -   app\Http\Requests\UpdateproductRequest.php
+    -   app\Policies\ProductPolicy.php
 
 ## Migráció
 
@@ -992,7 +1014,7 @@ Authorization: Bearer {{token}}
 
 **UsersControllers.php**
 ```php
-public function login(LoginUserRequest $request)
+public function login(LoginUsersRequest $request)
 {
     //Eltároljuk az adatokat változókba
     $email = $request->input(('email'));
@@ -1016,14 +1038,14 @@ public function login(LoginUserRequest $request)
     //$user->token = $user->createToken('access')->plainTextToken;
 
     //Lejárati idővel
-    $expirationTime = Carbon::now()->addSeconds(10);
-    $name ="10sec";
+    // $expirationTime = Carbon::now()->addSeconds(10);
+    // $name ="10sec";
     // $expirationTime = Carbon::now()->addMinutes(30);
     // $name ="30min";
     // $expirationTime = Carbon::now()->addHours(4);;
     // $name ="4hours";
-    // $expirationTime = Carbon::now()->addDays(1);
-    // $name ="1day";
+    $expirationTime = Carbon::now()->addDays(1);
+    $name ="1day";
     $abilities = ['*'];
 
     $user->token = $user->createToken(
@@ -1343,7 +1365,7 @@ Route::delete('users/{id}', [UsersController::class, 'destroy'])
 ```
 
 
-## Token élettatam beállítás
+## Token élettatam beállítás egységesen
 Ezt csak akkor édemes, ha mindeninek egységesen azt akarjuk adni
 **app/config/sanctum.php**
 ```php
@@ -1352,6 +1374,211 @@ Ezt csak akkor édemes, ha mindeninek egységesen azt akarjuk adni
 //'expiration' => 1,
 
 ```
+
+
+# Role (szerepkör) hitelesítés
+
+## User tábla bővítés, szerepkörök
+1. vegyünk fel egy role nevű új mezőt a user táblába
+- Tervezett szerepkörök:
+    - 1: admin
+    - 2: raktáros
+    - 3: vásárló
+
+- `php artisan make:migration add_role_to_users_table --table=users`
+
+2025_11_17_164436_add_role_to_users_table.php
+```php
+public function up(): void
+{
+    Schema::table('users', function (Blueprint $table) {
+        // role mező hozzáadása: integer, alapértelmezett értéke 3
+        $table->integer('role')->default(3)->after('email');
+    });
+}
+
+/**
+ * Reverse the migrations.
+ */
+public function down(): void
+{
+    Schema::table('users', function (Blueprint $table) {
+        // A role mező eltávolítása visszavonáskor
+        $table->dropColumn('role');
+    });
+}
+```
+
+2. Migráció futtatása
+- `php artisan migrate`
+
+3. Módosítsuk a seeder-t és hozzunk létre 3 különböző szerepű felhasználót
+
+database/seeders/UserSeeder.php
+```php
+public function run(): void
+{
+    //
+    User::factory()->create([
+        'name' => 'Admin',
+        'email' => 'admin@example.com',
+        'password' => '123',
+        'role' => 1,
+    ]);
+    User::factory()->create([
+        'name' => 'Raktáros',
+        'email' => 'raktaros@example.com',
+        'password' => '123',
+        'role' => 2,
+    ]);
+    User::factory()->create([
+        'name' => 'Vásárló1',
+        'email' => 'vasarlo1@example.com',
+        'password' => '123',
+        'role' => 3,
+    ]);
+}
+```
+
+4. Futtassuk a Seedert-t
+`php artisan migrate:fresh --seed` (minden alaphelyzetbe)
+vagy
+`php artisan db:seed` (minden maradjon)
+
+## Role terv
+- 1: admin
+    minden művelet
+- 2: raktáros
+    user: login, logout
+    products: read, create, update, delete
+- 3: vásárló
+    user: login, logout
+    products: read
+
+## Role kiosztás megvalósítása
+- A role kiosztást a token abilities paraméterében adjuk meg
+- Ez a tokenben tárolódik
+
+app/Http/Controllers/UserController.php
+```php
+public function login(LoginUserRequest $request)
+{
+ //...
+    $expirationTime = Carbon::now()->addDays(1);
+    $role = $user->role;
+    $name = "1day-$role";
+    switch ($role) {
+        case 1:
+            //Admin
+            $abilities = ['*'];
+            break;
+        case 2:
+            //Raktáros
+            $abilities = [
+                'products:create',
+                'products:delete',
+                'products:update',
+            ];
+            break;
+        default:
+            //Vásárló
+            $abilities = [
+            ];
+            break;
+    }
+
+
+    $user->token = $user->createToken(
+        $name,
+        $abilities,
+        $expirationTime
+    )->plainTextToken;
+ //...
+}    
+```
+Token képzés
+- A token egy fix méretű egyedi véletleszerű sztring
+- Az abilities nem benne tárolódik, hanem
+- a **personal_access_tokens** tábla abilities (TEXT típusú) mezőjében
+- string formátumban. 
+- pl.: ['products:create','products:delete','products:update']
+- Az abilities kifejezés lehet nagyon hosszú is
+
+Sanctum Logika: 
+- A Laravel Sanctum CheckAbilities middleware-je ellenőrzi, hogy 
+- az érkező token rendelkezik-e a megadott képességgel (course:create). 
+- A Rendszergazda tokenje tartalmazza a * képességet, tehát mindent csinálhat.
+
+Abilities ellenőrzés működése:
+- Amikor a Laravel találkozik az 'ability:course:delete' karaktersorozattal, azt kettéosztja:
+- Middleware Alias: ability (ami a CheckAbilities::class osztályra mutat).
+- Paraméter: products:delete (ez az, amit átad a CheckAbilities osztály handle metódusának).
+- A CheckAbilities middleware ezután megvizsgálja a bejelentkezett felhasználó tokenjét és megnézi, hogy az átadott paraméter (products:delete) szerepel-e a tokenjéhez rendelt képességek listájában. 
+
+## Jogosultság kiosztás
+- Adott user token kiosztásnál az abilities-ben felsoroltuk, hogy melyik táblával mit csinálhat: **táblanév:művelet** formában.
+    - Raktáros: $abilities = ['products:create','products:delete','products:update'];
+
+- Az endpointoknál (ahol korlátozás van) az van megnevezve, hogy ő mit csinál
+    - 'ability:táblanév:művelet' formában.
+- Amit mindenki csinálhat nem korlátozunk
+- A rendszergazda ['*'] ability-je pedig mindenre jogosít
+
+routes/api.php
+```php
+//Mindenki
+Route::get('products', [ProductController::class, 'index']);
+Route::get('products/{id}', [ProductController::class, 'show']);
+
+//Admin és Raktáros
+Route::post('products', [ProductController::class, 'store'])
+    ->middleware('auth:sanctum', 'ability:products:create');
+Route::delete('products/{id}', [ProductController::class, 'destroy'])
+    ->middleware('auth:sanctum', 'ability:products:delete');
+Route::patch('products/{id}', [ProductController::class, 'update'])
+    ->middleware('auth:sanctum', 'ability:products:update');
+```
+
+## Middleware regisztráció
+Hohoz hogy a sanctum felismerje az ability: bejegyzésket, regisztrálni kell.
+app/Providers/AppServiceProvider.php
+```php
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Route; // <--- EZT KELL HOZZÁADNI
+use Laravel\Sanctum\Http\Middleware\CheckAbilities; // <--- EZT KELL HOZZÁADNI
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Illuminate\Support\Facades\Exceptions;
+
+class AppServiceProvider extends ServiceProvider
+{
+    //... 
+
+    public function boot(): void
+    {
+        // Az alapértelmezett string hossza 191 karakterre csökkentése
+        Schema::defaultStringLength(191);
+        //Middleware regisztráció
+        Route::aliasMiddleware('ability', CheckAbilities::class);
+
+        // 2. KIVÉTELKEZELÉS REGISZTRÁCIÓJA
+        Exceptions::renderable(function (AccessDeniedHttpException $e, $request) {
+
+            // Csak API kérésekre fusson le
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Access denied.'
+                ], 403);
+            }
+        });
+    }
+}
+```
+
+[profibb user kezelés: törlés és módosítás](https://gemini.google.com/share/35bee94261ae)
 
 # Ütemezés
 
@@ -1364,3 +1591,59 @@ Példa:
 `$user = App\Models\User::find(1);`
 `$user->tokens()->delete();`
 `exit`
+
+# Egy tábla eltávolítása
+Néha fontos, hogy egy feleslegessé vált táblát eltávolítsunk a rendszerből.
+Nincs egyetlen olyan beépített Artisan parancs, mint a php artisan make:model Product -a --api (ami létrehoz mindent), amelyik automatikusan visszavonja az összes létrehozott fájlt (Modell, Controller, Migration, Factory, Seeder)
+
+Az eltávolítás lépései:
+1. Vegyük ki a táblára való hivatkozásokat:
+- Endpointok: **routes/api.ph**p fájlból tröljük az endpointokat
+- Seeders: **database/seeders/DatabaseSeeder.php**: Tisztítsuk ki belőle
+
+2. Kézzel egyenként töröljük le a tábla kezeléséhez létrehozott osztályokat:
+- migrations\2025_11_01_191501_create_products_table.php
+- app\Models\Product.php
+- seeders\ProductSeeder.php
+- database\factories\ProductFactory.php
+- app\Http\Controllers\ProductController.php
+- app\Http\Requests\StoreproductRequest.php
+- app\Http\Requests\UpdateproductRequest.php
+- app\Policies\ProductPolicy.php
+
+3. Hozzunk létre egy tábla törlő módosító migrációt
+- Készísünk egy tábla törlő migrációt:
+    - `php artisan make:migration delete_produscts_table --table=products`
+- Készítsük el törlés és az esetleges visszaállítás kódját (opcionális)
+```php
+public function up(): void
+    {
+        //Ha voltak kapcsolatai, akkor azokat törölni kell
+        //Ebben a példában a products volt a több oldalon, és a valami táblához kapcsolódott
+        //valami_id idegen kulccsal
+        Schema::table('products', function (Blueprint $table) {
+            // Feltételezve, hogy a kapcsolat neve product_valami_id_foreign
+            $table->dropForeign('product_valami_id_foreign');
+            //Ezután törölheted az oszlopot is, ha már nincs rá szükség
+            $table->dropColumn('valami_id'); 
+        });
+
+        // Csak akkor törli, ha létezik
+        Schema::dropIfExists('products');
+    }
+
+    //Ez elhagyható, ha biztos hogy nem akarjuk újracsinálni
+    public function down(): void
+    {
+        // Ide írhatja a tábla újra létrehozásának logikáját,
+        // ha valaha is vissza akarja vonni ezt a migrációt.
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            // ... egyéb oszlopok
+            $table->timestamps();
+        });
+    }
+```
+- Futtassuk a migrációt, ami letörli fizikailag a táblát: 
+    - `php artisan migrate --path=database/migrations/2025_01_20_123456_delete_produscts_table.php`

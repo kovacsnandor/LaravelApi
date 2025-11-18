@@ -39,14 +39,14 @@ class UserController extends Controller
         //$user->token = $user->createToken('access')->plainTextToken;
 
         //Lejárati idővel
-        $expirationTime = Carbon::now()->addSeconds(20);
-        $name = "20sec";
+        // $expirationTime = Carbon::now()->addSeconds(20);
+        // $name = "20sec";
         // $expirationTime = Carbon::now()->addMinutes(30);
         // $name ="30min";
         // $expirationTime = Carbon::now()->addHours(4);;
         // $name ="4hours";
-        // $expirationTime = Carbon::now()->addDays(1);
-        // $name ="1day";
+        $expirationTime = Carbon::now()->addDays(1);
+        $name ="1day";
         $abilities = ['*'];
 
         $user->token = $user->createToken(
@@ -107,7 +107,26 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            //code...
+            $rows = User::all();
+            // $sql ="SELECT * FROM products";
+            // $rows = DB::select($sql);
+            $status = 200;
+            $data = [
+                'message' => 'OK',
+                'data' => $rows
+            ];
+        } catch (\Exception $e) {
+            //throw $th;
+            $status = 500;
+            $data = [
+                'message' => "Server error {$e->getCode()}",
+                'data' => $rows
+            ];
+        }
+
+        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -123,15 +142,54 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        try {
+            $row = User::create($request->all());
+
+            $data = [
+                'message' => 'ok',
+                'data' => $row
+            ];
+            // Sikeres válasz: 201 Created kód ajánlott új erőforrás létrehozásakor
+            return response()->json($data, 201, options: JSON_UNESCAPED_UNICODE);
+        } catch (QueryException $e) {
+            // Ellenőrizzük, hogy ez egy "Duplicate entry for key" hiba-e (MySQL hibakód: 23000 vagy 1062)
+            if ($e->getCode() == 23000 || str_contains($e->getMessage(), 'Duplicate entry')) {
+                $data = [
+                    'message' => 'Insert error: The given name already exists, please choose another one',
+                    'data' => [
+                        'name' => $request->input('name') // Visszaküldhetjük, mi volt a hibás
+                    ]
+                ];
+                // Kliens hiba, ami jelzi a kérés érvénytelenségét
+                return response()->json($data, 409, options: JSON_UNESCAPED_UNICODE); // 409 Conflict ajánlott
+            }
+            // Ha nem ez a hiba volt, dobjuk tovább az eredeti kivételt, vagy kezeljük másképp
+            throw $e;
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(int $id)
     {
-        //
+        $row = User::find($id);
+        if ($row) {
+            # code...
+            $status = 200;
+            $data = [
+                'message' => 'OK',
+                'data' => $row
+            ];
+        } else {
+            # code...
+            $status = 404;
+            $data = [
+                'message' => "Not found id: $id",
+                'data' => null
+            ];
+        }
+        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -145,16 +203,56 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, int $id)
     {
-        //
+        $row = User::find($id);
+        if ($row) {
+            # code...
+            $status = 200;
+            $row->update($request->all());
+
+            $data = [
+                'message' => 'OK',
+                'data' => [
+                    'data' => $row
+                ]
+            ];
+        } else {
+            # code...
+            $status = 404;
+            $data = [
+                'message' => "Patch error. Not found id: $id",
+                'data' => $id
+            ];
+        }
+        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(int $id)
     {
-        //
+        $row = User::find($id);
+        if ($row) {
+            # code...
+            $status = 200;
+            $row->delete();
+
+            $data = [
+                'message' => 'OK',
+                'data' => [
+                    'id' => $id
+                ]
+            ];
+        } else {
+            # code...
+            $status = 404;
+            $data = [
+                'message' => "Delete error. Not found id: $id",
+                'data' => null
+            ];
+        }
+        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 }
