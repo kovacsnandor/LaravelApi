@@ -45,15 +45,38 @@ class UserController extends Controller
         // $name ="30min";
         // $expirationTime = Carbon::now()->addHours(4);;
         // $name ="4hours";
+
+
         $expirationTime = Carbon::now()->addDays(1);
-        $name ="1day";
-        $abilities = ['*'];
+        $role = $user->role;
+        $name = "1day-role:$role";
+        switch ($role) {
+            case 1:
+                //Admin
+                $abilities = ['*'];
+                break;
+            case 2:
+                //Raktáros
+                $abilities = [
+                    'products:create',
+                    'products:delete',
+                    'products:update',
+                ];
+                break;
+            default:
+                //Vásárló
+                $abilities = [];
+                break;
+        }
+
 
         $user->token = $user->createToken(
             $name,
             $abilities,
             $expirationTime
         )->plainTextToken;
+
+
 
         //visszaadjuk a usert, ami a tokent is tartalmazni fogja
         $data = [

@@ -1466,7 +1466,7 @@ public function login(LoginUserRequest $request)
  //...
     $expirationTime = Carbon::now()->addDays(1);
     $role = $user->role;
-    $name = "1day-$role";
+    $name = "1day-role:$role";
     switch ($role) {
         case 1:
             //Admin
