@@ -9,35 +9,44 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-//region users
-Route::post('users/login', [UserController::class, 'login']);
-Route::post('users/logout', [UserController::class, 'logout']);
-Route::get('users', [UserController::class, 'index'])
-    ->middleware('auth:sanctum');
-
-Route::get('users/{id}', [UserController::class, 'show'])
-    ->middleware('auth:sanctum');
-Route::post('users', [UserController::class, 'store']);
-       
-Route::patch('users/{id}', [UserController::class, 'update'])
-    ->middleware('auth:sanctum');    
-Route::delete('users/{id}', [UserController::class, 'destroy'])
-    ->middleware(middleware: 'auth:sanctum');    
-//endregion
-
-
-
-
-
 //endpoint
 Route::get('/x', function(){
     return 'API';
 });
 
-//Endpoint készítés
+
+//region users
+//User kezelés, login, logout
+
+//Mindenki
+Route::post('users/login', [UserController::class, 'login']);
+Route::post('users/logout', [UserController::class, 'logout']);
+
+//Rendszergazda
+Route::get('users', [UserController::class, 'index'])
+    ->middleware('auth:sanctum', 'ability:*');
+
+//Mindenki: Saját profil lekérése    
+Route::get('users/{id}', [UserController::class, 'show']);
+//Mindenki: Regisztrálás
+Route::post('users', [UserController::class, 'store']);
+//Mindenki: Profil adatok módosítása      
+Route::patch('users/{id}', [UserController::class, 'update']);
+//Mindenki: Saját fiók megszüntetése
+Route::delete('users/{id}', [UserController::class, 'destroy']);    
+//endregion
+
+//region products
+//Mindenki
 Route::get('products', [ProductController::class, 'index']);
 Route::get('products/{id}', [ProductController::class, 'show']);
-Route::post('products', [ProductController::class, 'store'])->middleware('auth:sanctum');
-Route::delete('products/{id}', [ProductController::class, 'destroy'])->middleware('auth:sanctum');
-Route::patch('products/{id}', [ProductController::class, 'update'])->middleware('auth:sanctum');
+
+//Admin és Raktáros
+Route::post('products', [ProductController::class, 'store'])
+    ->middleware('auth:sanctum', 'ability:products:create');
+Route::delete('products/{id}', [ProductController::class, 'destroy'])
+    ->middleware('auth:sanctum', 'ability:products:delete');
+Route::patch('products/{id}', [ProductController::class, 'update'])
+    ->middleware('auth:sanctum', 'ability:products:update');
+//endregion    
 
