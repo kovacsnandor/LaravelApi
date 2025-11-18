@@ -13,8 +13,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "test2@example.com",
-    "password": "1234"
+    "email": "vasarlo1@example.com",
+    "password": "123"
 }
 
 ###
@@ -59,7 +59,7 @@ Authorization: Bearer {{token}}
 }
 
 ### delete user
-DELETE {{host}}/api/users/4
+DELETE {{host}}/api/users/1
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
@@ -75,15 +75,16 @@ Authorization: Bearer {{token}}
 
 
 ### get product by id
-get {{host}}/api/products/5023333
-
+get {{host}}/api/products/1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### post products
 POST  {{host}}/api/products
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
-
 
 {
     "category": "Bogyós",
