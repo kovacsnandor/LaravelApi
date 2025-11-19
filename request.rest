@@ -32,7 +32,7 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 ### get user by id
-GET  {{host}}/api/users/4
+GET  {{host}}/api/users/1
 Accept: application/json
 Authorization: Bearer {{token}}
 
