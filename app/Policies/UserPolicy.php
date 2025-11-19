@@ -18,9 +18,12 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user, User $model): Response
     {
-        return false;
+        if ($user->id !== $model->id) {
+            return Response::deny('Csak a saját profilodat nézheted.');
+        }
+        return Response::allow();
     }
 
     /**

@@ -17,23 +17,34 @@ Route::get('/x', function(){
 
 //region users
 //User kezelés, login, logout
-
 //Mindenki
 Route::post('users/login', [UserController::class, 'login']);
 Route::post('users/logout', [UserController::class, 'logout']);
+Route::post('users', [UserController::class, 'store']);
 
-//Rendszergazda
+//Admin: 
+//minden user lekérdezése
 Route::get('users', [UserController::class, 'index'])
     ->middleware('auth:sanctum', 'ability:*');
+//Egy user lekérése    
+Route::get('users/{id}', [UserController::class, 'show'])
+    ->middleware('auth:sanctum', 'ability:*');
+//User adatok módosítása      
+Route::patch('users/{id}', [UserController::class, 'update'])
+->middleware('auth:sanctum', 'ability:*');
+//User törlés
+Route::delete('users/{id}', [UserController::class, 'destroy'])
+->middleware('auth:sanctum', 'ability:*');  
 
-//Mindenki: Saját profil lekérése    
-Route::get('users/{id}', [UserController::class, 'show']);
-//Mindenki: Regisztrálás
-Route::post('users', [UserController::class, 'store']);
-//Mindenki: Profil adatok módosítása      
-Route::patch('users/{id}', [UserController::class, 'update']);
-//Mindenki: Saját fiók megszüntetése
-Route::delete('users/{id}', [UserController::class, 'destroy']);    
+//User self (Amit a user önmagával csinálhat) parancsok
+Route::delete('usersme', [UserController::class, 'destroySelf'])
+->middleware('auth:sanctum', 'ability:usersme:delete');
+
+Route::patch('usersme', [UserController::class, 'updateSelf'])
+->middleware('auth:sanctum', 'ability:usersme:patch');
+
+Route::get('usersme', [UserController::class, 'indexSelf'])
+    ->middleware('auth:sanctum', 'ability:usersme:get'); 
 //endregion
 
 //region products

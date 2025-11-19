@@ -62,6 +62,9 @@ class UserController extends Controller
             case 2:
                 //Raktáros
                 $abilities = [
+                    'usersme:delete',
+                    'usersme:patch',
+                    'usersme:get',
                     'products:create',
                     'products:delete',
                     'products:update',
@@ -69,7 +72,11 @@ class UserController extends Controller
                 break;
             default:
                 //Vásárló
-                $abilities = [];
+                $abilities = [
+                    'usersme:delete',
+                    'usersme:patch',
+                    'usersme:get',
+                ];
                 break;
         }
 
@@ -283,6 +290,29 @@ class UserController extends Controller
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 
+    //Önmagam törlése
+    public function destroySelf(Request $request)
+    {
+        //Kivesszük a bejelenkezett user-t
+        $userToDestroy = $request->user();
+        // A Policy-t használjuk: 
+        $this->authorize('delete', $userToDestroy);
+        // ... törlés logika
+        //A user tokenjeinek törlése
+        $userToDestroy->tokens()->delete();
+        //A user törlése
+        $userToDestroy->delete();
+
+        $status = 404;
+        $data = [
+            'message' => "Sikeresen törölted a fiókodat",
+            'data' => null
+        ];
+        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+    }
+
+
+    //Önmagam módosítása
     public function updateSelf(UpdateUserSelfRequest $request)
     {
 
@@ -301,6 +331,23 @@ class UserController extends Controller
             ]
         ];
 
+        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+    }
+
+    //Önmagam megnézése
+    public function indexSelf(Request $request)
+    {
+        //Kivesszük a bejelenkezett user-t
+        $userToDestroy = $request->user();
+        // A Policy-t használjuk: 
+        $this->authorize('view', $userToDestroy);
+        $status = 200;
+        $data = [
+            'message' => 'OK',
+            'data' => [
+                'data' => $userToDestroy
+            ]
+        ];
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 }
