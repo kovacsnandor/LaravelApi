@@ -64,6 +64,42 @@ Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
 
+
+### User csak önmagát törölheti
+DELETE {{host}}/api/usersme
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### A bejelentkezett user a jelszavát módosítja
+PATCH {{host}}/api/usersme
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "password": "1234"
+}
+
+
+### A bejelentkezett user egy adatát módosítja. A role tiltott
+PATCH {{host}}/api/usersme
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "TEST",
+    "role": 1
+}
+
+### A bejelentkezett user önmagát lekérheti
+GET  {{host}}/api/usersme
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+
 ### teszt
 get {{host}}/api/x
 
