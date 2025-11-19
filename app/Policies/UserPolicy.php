@@ -34,9 +34,35 @@ class UserPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, User $model): bool
+    //Ez egy ellnőrző függvény
+    //Ha rendben van: true
+    //Ha nem, akkor false
+    public function update(User $user, User $model): Response
     {
-        return false;
+        // Először ellenőrizzük, hogy a bejelentkezett felhasználó azonos-e a módosítandóval.
+        if ($user->id !== $model->id) {
+            // Ha nem önmódosítás, és nem adminról van szó (az adminra vonatkozik a before() metódus), 
+            // megtagadjuk. De a before() miatt ez a rész főleg a nem-adminokra érvényes.
+            if ($user->role !== 1) {
+                //vissza: false
+                return Response::deny('Csak a saját profilodat módosíthatod.');
+            }
+        }
+
+        // 3. ADMIN SPECIÁLIS SZABÁLY: Megnézzük, próbál-e a user a saját 'role' mezőjén módosítani.
+        // Ezt az ellenőrzést csak akkor végezzük el, ha valóban az admin magát módosítja.
+        if ($user->role === 1 && $user->id === $model->id) {
+
+            // Ha az admin megpróbálja a bemeneti adatokkal megváltoztatni a role mezőt:
+            $request = request();
+            if ($request->has('role') && (int)$request->input('role') !== $user->role) {
+                return Response::deny('Admin: Nem módosíthatod a saját szerepkörödet.');
+            }
+        }
+
+        // Ha minden ellenőrzésen átment (önmódosítás, és nem sérti az admin korlátozásokat).
+        //Viszza: true
+        return Response::allow();
     }
 
     /**
