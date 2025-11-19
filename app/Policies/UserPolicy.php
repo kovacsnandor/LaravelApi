@@ -68,9 +68,13 @@ class UserPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, User $model): Response
     {
-        return false;
+        // Csak akkor engedélyezzük a törlést, ha a bejelentkezett felhasználó azonos a törlendővel.
+
+        return $user->id === $model->id
+            ? Response::allow()
+            : Response::deny('Csak a saját profilodat törölheted.');
     }
 
     /**
