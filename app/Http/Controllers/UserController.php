@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdateUserSelfRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
 
     public function login(LoginUserRequest $request)
     {
@@ -276,6 +280,27 @@ class UserController extends Controller
                 'data' => null
             ];
         }
+        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+    }
+
+    public function updateSelf(UpdateUserSelfRequest $request)
+    {
+
+        //Kivesszük a bejelenkezett user-t
+        $userToDestroy = $request->user();
+        // A Policy-t használjuk: 
+        $this->authorize('update', $userToDestroy);
+
+        $status = 200;
+        $userToDestroy->update($request->all());
+
+        $data = [
+            'message' => 'OK',
+            'data' => [
+                'data' => $userToDestroy
+            ]
+        ];
+
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 }
