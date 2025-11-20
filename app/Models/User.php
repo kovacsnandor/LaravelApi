@@ -50,4 +50,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isAdmin(): bool
+    {
+        // Feltételezve, hogy a 'role' mező tárolja a szerepkört,
+        // és '1' az adminisztrátori szerep száma.
+        return $this->role === 1; 
+    }
 }

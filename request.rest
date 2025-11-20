@@ -49,13 +49,13 @@ Authorization: Bearer {{token}}
 }
 
 ### patch user
-PATCH {{host}}/api/users/1
+PATCH {{host}}/api/users/2
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "Boss"
+    "name": "No Boss"
 }
 
 ### delete user
@@ -88,7 +88,7 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-     "role": 1
+     "name": "admin1"
 }
 
 ### A bejelentkezett user önmagát lekérheti

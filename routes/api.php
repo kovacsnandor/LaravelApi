@@ -25,16 +25,16 @@ Route::post('users', [UserController::class, 'store']);
 //Admin: 
 //minden user lekérdezése
 Route::get('users', [UserController::class, 'index'])
-    ->middleware('auth:sanctum', 'ability:*');
+    ->middleware('auth:sanctum', 'ability:admin');
 //Egy user lekérése    
 Route::get('users/{id}', [UserController::class, 'show'])
-    ->middleware('auth:sanctum', 'ability:*');
+    ->middleware('auth:sanctum', 'ability:admin');
 //User adatok módosítása      
 Route::patch('users/{id}', [UserController::class, 'update'])
-->middleware('auth:sanctum', 'ability:*');
+->middleware('auth:sanctum', 'ability:admin');
 //User törlés
 Route::delete('users/{id}', [UserController::class, 'destroy'])
-->middleware('auth:sanctum', 'ability:*');  
+->middleware('auth:sanctum', 'ability:admin');  
 
 //User self (Amit a user önmagával csinálhat) parancsok
 Route::delete('usersme', [UserController::class, 'destroySelf'])
