@@ -68,6 +68,24 @@ class UserPolicy
         return Response::allow();
     }
 
+    public function updateAdmin(User $user, User $model): Response
+    {
+
+        // Amin  aját 'role' mezőjét nem módosíthatja.
+        if ($user->role === 1 && $user->id === $model->id) {
+
+            // Ha az admin megpróbálja a bemeneti adatokkal megváltoztatni a role mezőt:
+            $request = request();
+            if ($request->has('role') && (int)$request->input('role') !== $user->role) {
+                return Response::deny('Admin: Nem módosíthatod a saját szerepkörödet.');
+            }
+        }
+
+        // Ha minden ellenőrzésen átment (önmódosítás, és nem sérti az admin korlátozásokat).
+        return Response::allow();
+    }
+
+
     /**
      * Determine whether the user can delete the model.
      */
@@ -79,6 +97,16 @@ class UserPolicy
             ? Response::allow()
             : Response::deny('Mehiúsult a delete: Csak a saját profilodat törölheted csak, vagy redszergazda vagy.');
     }
+
+    public function deleteAdmin(User $user, User $model): Response
+    {
+
+        // Öntörlés kizárva
+        return $user->id !== $model->id
+            ? Response::allow()
+            : Response::deny('Csak a saját profilodat törölheted.');
+    }
+
 
     /**
      * Determine whether the user can restore the model.
