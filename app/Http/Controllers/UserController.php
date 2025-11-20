@@ -244,6 +244,10 @@ class UserController extends Controller
         if ($row) {
             # code...
             $status = 200;
+            //Szabd-e ezt nekem?
+            $userToUpdate = $row;
+            $this->authorize('updateAdmin', $userToUpdate);
+
             $row->update($request->all());
 
             $data = [
@@ -272,6 +276,8 @@ class UserController extends Controller
         if ($row) {
             # code...
             $status = 200;
+            $userToDestroy = $row;
+            $this->authorize('deleteAdmin', $userToDestroy);
             $row->delete();
 
             $data = [
