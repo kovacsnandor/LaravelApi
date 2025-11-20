@@ -81,7 +81,6 @@ Authorization: Bearer {{token}}
     "password": "ronaldo"
 }
 
-
 ### A bejelentkezett user egy adatát módosítja. A role tiltott
 PATCH {{host}}/api/usersme
 Content-Type: application/json

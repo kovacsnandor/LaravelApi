@@ -293,7 +293,7 @@ class UserController extends Controller
     //Önmagam törlése
     public function destroySelf(Request $request)
     {
-        //Kivesszük a bejelenkezett user-t
+        //Kivesszük a törlendő user-t
         $userToDestroy = $request->user();
         // A Policy-t használjuk: 
         $this->authorize('delete', $userToDestroy);
@@ -316,18 +316,18 @@ class UserController extends Controller
     public function updateSelf(UpdateUserSelfRequest $request)
     {
 
-        //Kivesszük a bejelenkezett user-t
-        $userToDestroy = $request->user();
+        //Kivesszük a módosítasndó user-t
+        $userToUpdate = $request->user();
         // A Policy-t használjuk: 
-        $this->authorize('update', $userToDestroy);
+        $this->authorize('update', $userToUpdate);
 
         $status = 200;
-        $userToDestroy->update($request->all());
+        $userToUpdate->update($request->all());
 
         $data = [
             'message' => 'OK',
             'data' => [
-                'data' => $userToDestroy
+                'data' => $userToUpdate
             ]
         ];
 
@@ -337,15 +337,15 @@ class UserController extends Controller
     //Önmagam megnézése
     public function indexSelf(Request $request)
     {
-        //Kivesszük a bejelenkezett user-t
-        $userToDestroy = $request->user();
+        //Kivesszük a megmutandó usert
+        $userToGet= $request->user();
         // A Policy-t használjuk: 
-        $this->authorize('view', $userToDestroy);
+        $this->authorize('view', $userToGet);
         $status = 200;
         $data = [
             'message' => 'OK',
             'data' => [
-                'data' => $userToDestroy
+                'data' => $userToGet
             ]
         ];
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
