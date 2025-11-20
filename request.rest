@@ -13,8 +13,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "vasarlo1@example.com",
-    "password": "123"
+    "email": "admin@example.com",
+    "password": "ronaldo"
 }
 
 ###
@@ -43,19 +43,19 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name":  "test2",
-    "email": "test2@example.com",
+    "name":  "Vásárló3",
+    "email": "vasarlo3@example.com",
     "password": "123"
 }
 
 ### patch user
-PATCH {{host}}/api/users/3
+PATCH {{host}}/api/users/5
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "password": "1234"
+    "password": "321"
 }
 
 ### delete user
@@ -78,7 +78,7 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "password": "1234"
+    "password": "ronaldo"
 }
 
 
@@ -89,8 +89,7 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name": "TEST",
-    "role": 1
+     "email": "vasarlo33@example.com"
 }
 
 ### A bejelentkezett user önmagát lekérheti

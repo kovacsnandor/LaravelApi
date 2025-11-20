@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UpdateUserSelfRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateUserSelfRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,9 +25,19 @@ class UpdateUserSelfRequest extends FormRequest
         return [
             'name' => 'nullable|string',
             'email' => 'nullable|email',
-            'password' => 'nullable|string',
+            'password' => [
+                'nullable',
+                'string',
+                Password::min(10) // Minimum 10 karakter
+                    ->mixedCase() // Kevert kis- és nagybetű
+                    ->letters()   // Legalább egy betű
+                    ->numbers()   // Legalább egy szám
+                    ->symbols()   // Legalább egy szimbólum
+                    ->uncompromised(), // Ne legyen kiszivárgott
+            ],
             // Tiltott mező: Ha a role mező megérkezik a kérésben, a validáció elbukik.
             'role' => 'prohibited',
         ];
+        
     }
 }

@@ -75,9 +75,9 @@ class UserPolicy
     {
         // Csak akkor engedélyezzük a törlést, ha a bejelentkezett felhasználó azonos a törlendővel.
 
-        return $user->id === $model->id
+        return $user->id === $model->id && $user->role > 1
             ? Response::allow()
-            : Response::deny('Csak a saját profilodat törölheted.');
+            : Response::deny('Mehiúsult a delete: Csak a saját profilodat törölheted csak, vagy redszergazda vagy.');
     }
 
     /**
