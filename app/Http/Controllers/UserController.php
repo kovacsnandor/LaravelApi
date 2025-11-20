@@ -240,6 +240,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, int $id)
     {
         $row = User::find($id);
+        
         if ($row) {
             # code...
             $status = 200;
@@ -316,7 +317,7 @@ class UserController extends Controller
     public function updateSelf(UpdateUserSelfRequest $request)
     {
 
-        //Kivesszük a módosítasndó user-t
+        //Kivesszük a módosítandó user-t
         $userToUpdate = $request->user();
         // A Policy-t használjuk: 
         $this->authorize('update', $userToUpdate);
@@ -337,7 +338,7 @@ class UserController extends Controller
     //Önmagam megnézése
     public function indexSelf(Request $request)
     {
-        //Kivesszük a megmutandó usert
+        //Kivesszük a megmutatandó usert
         $userToGet= $request->user();
         // A Policy-t használjuk: 
         $this->authorize('view', $userToGet);
