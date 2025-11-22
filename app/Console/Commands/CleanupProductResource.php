@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Artisan; 
-use Symfony\Component\Console\Output\BufferedOutput;// Az Artisan parancsok futtatásához
+use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\Console\Output\BufferedOutput; // Az Artisan parancsok futtatásához
 
 class CleanupProductResource extends Command
 {
@@ -115,11 +115,13 @@ class CleanupProductResource extends Command
             $this->warn("\n⚠️ Nincs törlendő fájl a(z) '{$name}' erőforráshoz.");
         }
 
+
         // Utólagos javaslatok
         $this->newLine();
         $this->warn('--- Kézi tisztítás szükséges! ---');
         $this->warn("1. Távolítsd el a '{$lowerName}' útvonalat a routes/api.php fájlból.");
-        $this->warn("2. Ha használtál Policy-t, távolítsd el a Policy regisztrációt az App\Providers\AuthServiceProvider.php fájlból.");
+        $this->warn("2. database/seeders/DatabaseSeeder.php beli Seeder hivatkozás, tábla törlő parancs kiszedése");
+        $this->warn("3. Ha használtál Policy-t, távolítsd el a Policy regisztrációt az app\Providers\AuthServiceProvider.php fájlból.");
         return self::SUCCESS;
     }
 }
