@@ -47,17 +47,3 @@ Route::get('usersme', [UserController::class, 'indexSelf'])
     ->middleware('auth:sanctum', 'ability:usersme:get'); 
 //endregion
 
-//region products
-//Mindenki
-Route::get('products', [ProductController::class, 'index']);
-Route::get('products/{id}', [ProductController::class, 'show']);
-
-//Admin és Raktáros
-Route::post('products', [ProductController::class, 'store'])
-    ->middleware('auth:sanctum', 'ability:products:create');
-Route::delete('products/{id}', [ProductController::class, 'destroy'])
-    ->middleware('auth:sanctum', 'ability:products:delete');
-Route::patch('products/{id}', [ProductController::class, 'update'])
-    ->middleware('auth:sanctum', 'ability:products:update');
-//endregion    
-
