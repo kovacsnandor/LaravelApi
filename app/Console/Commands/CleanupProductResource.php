@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\BufferedOutput;// Az Artisan parancsok futt
 
 class CleanupProductResource extends Command
 {
-    // A parancs neve és argumentuma (pl. php artisan cleanup:resource Product)
+    //A parancs neve és argumentuma (pl. php artisan cleanup:resource Product)
     protected $signature = 'my_cleanup:resource {name}';
 
     // A parancs rövid leírása
