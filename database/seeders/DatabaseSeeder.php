@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         //Mielőtt seedelünk, minden táblát töröljünk le.
-        DB::statement('DELETE FROM products');
         DB::statement('DELETE FROM users');
 
 
@@ -27,7 +26,6 @@ class DatabaseSeeder extends Seeder
         //Ami Seeder osztály itt fel van sorolva, annak lefut a run() metódusa
         $this->call([
             UserSeeder::class,
-            ProductSeeder::class,
         ]);
     }
 }
