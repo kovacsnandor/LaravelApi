@@ -332,7 +332,8 @@ class UserController extends Controller
         $this->authorize('update', $userToUpdate);
 
         $status = 200;
-        $userToUpdate->update($request->all());
+        // $userToUpdate->update($request->all());
+        $userToUpdate->update($request->validated());
 
         $data = [
             'message' => 'OK',

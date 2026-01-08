@@ -78,7 +78,8 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "password": "ronaldo"
+    "name": "vasarlo2",
+    "email": "vasarlo2@example.com"
 }
 
 ### A bejelentkezett user egy adatát módosítja. A role tiltott
