@@ -92,7 +92,7 @@ Authorization: Bearer {{token}}
 }
 
 ### A bejelnkezett felhasználó jelszó cseréje
-PATCH {{host}}/api/usersmepasswordchange
+PATCH {{host}}/api/usersmeupdatepassword
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{token}}

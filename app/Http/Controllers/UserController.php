@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUserPasswordRequest;
 
 class UserController extends Controller
 {
@@ -240,7 +241,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, int $id)
     {
         $row = User::find($id);
-        
+
         if ($row) {
             # code...
             $status = 200;
@@ -341,11 +342,36 @@ class UserController extends Controller
         return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
     }
 
+    //Önmagam jelszavának módosítása
+    public function updatePassword(UpdateUserPasswordRequest $request)
+    {
+        /** @var \App\Models\User $user */
+        $user = $request->user();
+
+        // Frissítjük a jelszót (a Laravel 10+ automatikusan hasheli, 
+        // ha a model-ben a 'password' mező 'hashed' cast-ot kapott)
+        $user->update([
+            'password' => Hash::make($request->newpassword)
+        ]);
+
+        $data = [
+            'message' => 'Jelszó sikeresen módosítva.',
+            'data' => [
+                'user' => $user
+            ]
+        ];
+        $status = 200;
+
+        return response()->json($data, $status, options: JSON_UNESCAPED_UNICODE);
+    }
+
+
+
     //Önmagam megnézése
     public function indexSelf(Request $request)
     {
         //Kivesszük a megmutatandó usert
-        $userToGet= $request->user();
+        $userToGet = $request->user();
         // A Policy-t használjuk: 
         $this->authorize('view', $userToGet);
         $status = 200;
