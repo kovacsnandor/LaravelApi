@@ -91,6 +91,18 @@ Authorization: Bearer {{token}}
      "name": "admin1"
 }
 
+### A bejelnkezett felhasználó jelszó cseréje
+PATCH {{host}}/api/usersmepasswordchange
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+    "oldpassword": "regi-jelszo",
+    "newpassword": "AzUjJelszo123",
+    "newpassword_confirmation": "AzUjJelszo123"
+}
+
 ### A bejelentkezett user önmagát lekérheti
 GET  {{host}}/api/usersme
 Accept: application/json
