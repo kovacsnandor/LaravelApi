@@ -17,8 +17,8 @@ class UpdateUserPasswordRequest extends FormRequest
     {
         return [
             // Ellenőrzi, hogy a megadott 'oldpassword' azonos-e a DB-ben lévővel
-            'oldpassword' => ['required', 'current_password:api'], 
-            'newpassword' => ['required', 'string', Password::min(8), 'confirmed'],
+            'oldpassword' => ['required', 'current_password'], 
+            'newpassword' => ['required', 'string', Password::min(3), 'confirmed'],
         ];
     }
 }

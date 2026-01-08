@@ -14,7 +14,7 @@ Content-Type: application/json
 
 {
     "email": "vasarlo1@example.com",
-    "password": "123"
+    "password": "ronaldo"
 }
 
 ###
@@ -98,9 +98,9 @@ Accept: application/json
 Authorization: Bearer {{token}}
 
 {
-    "oldpassword": "regi-jelszo",
-    "newpassword": "AzUjJelszo123",
-    "newpassword_confirmation": "AzUjJelszo123"
+    "oldpassword": "ronaldo",
+    "newpassword": "123",
+    "newpassword_confirmation": "123"
 }
 
 ### A bejelentkezett user önmagát lekérheti

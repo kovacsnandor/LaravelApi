@@ -65,6 +65,7 @@ class UserController extends Controller
                 $abilities = [
                     'usersme:delete',
                     'usersme:patch',
+                    'usersme:updatePassword',
                     'usersme:get',
                     'products:create',
                     'products:delete',
@@ -76,6 +77,7 @@ class UserController extends Controller
                 $abilities = [
                     'usersme:delete',
                     'usersme:patch',
+                    'usersme:updatePassword',
                     'usersme:get',
                 ];
                 break;
